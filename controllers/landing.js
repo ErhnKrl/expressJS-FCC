@@ -23,5 +23,14 @@ exports.submit_lead = function (req, res, next) {
     if (err) throw err;
   });
   console.log('lead_email: ', req.body.lead_email); //we gonna access the value in the input element
-  res.redirect('/');
+  res.redirect('/leads');
+};
+
+//get data from mongo db and pass it to the view
+exports.show_leads = function (req, res, next) {
+  return email.find({}, function (err, data) {
+    if (err) throw err;
+    console.log(data);
+    res.render('landing', { data: data });
+  });
 };
