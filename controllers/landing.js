@@ -14,7 +14,7 @@ var emailSchema = new mongoose.Schema({
 var email = mongoose.model('emails', emailSchema);
 
 exports.get_landing = function (req, res, next) {
-  res.render('landing', { title: 'Express' });
+  res.render('landing', { title: 'Express' }); //redirect to landing.pug view
 };
 
 //get data from the view and send it to the database
@@ -23,18 +23,18 @@ exports.submit_lead = function (req, res, next) {
     if (err) throw err;
   });
   console.log('lead_email: ', req.body.lead_email); //we gonna access the value in the input element
-  res.redirect('/leads'); //query for /leads route to landing page again but evoke show_leads function
+  res.redirect('/leads'); //query for /leads route to landing page again and this routing evoke show_leads function
 };
 
 //get data from mongo db and pass it to the view
 exports.show_leads = function (req, res, next) {
   return email.find({}, function (err, data) {
     if (err) throw err;
-    res.render('landing', { data: data });
+    res.render('landing', { data: data }); //routing landing page again by pasting data retreived
   });
 };
 
-//query a specific record
+//query a specific record whose id is = req.params.lead_id and pasting retreived data to lead page
 exports.show_lead = function (req, res, next) {
   return email.find({ _id: req.params.lead_id }, function (err, data) {
     if (err) throw err;
@@ -42,6 +42,7 @@ exports.show_lead = function (req, res, next) {
   });
 };
 
+//Routing edit_lead view by a GET method with a req.params.lead_id identifier
 exports.show_edit_lead = function (req, res, next) {
   return email.find({ _id: req.params.lead_id }, function (err, data) {
     if (err) throw err;
@@ -49,9 +50,9 @@ exports.show_edit_lead = function (req, res, next) {
   });
 };
 
+//updating DB and fetching new data according to unic Id.
 exports.edit_lead = function (req, res, next) {
   let newvalues = { $set: { email: req.body.lead_email } };
-  console.log(newvalues);
   email.updateOne({ _id: req.params.lead_id }, newvalues, function (err, res) {
     if (err) throw err;
     console.log('1 document updated');
