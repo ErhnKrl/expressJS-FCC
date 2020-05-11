@@ -7,5 +7,8 @@ block content
             span LeadID: #{lead._id}
             | 
             a(href="/lead/"+lead._id+"/edit") Edita
+            | 
+            form(action="/lead/" + lead._id + "/delete" , method='POST')
+                button(type="submit") Deleta
     
         p Email: #{lead.email}
