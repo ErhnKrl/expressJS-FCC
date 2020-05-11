@@ -19,12 +19,13 @@ exports.get_landing = function (req, res, next) {
 
 //get data from the view and send it to the database
 exports.submit_lead = function (req, res, next) {
-  let newRecord = email({ email: req.body.lead_email }).save(function (err) {
+  email({ email: req.body.lead_email }).save(function (err) {
     if (err) throw err;
   });
-  console.log('lead_email: ', req.body.lead_email); //we gonna access the value in the input element
-  res.redirect('/leads'); //query for /leads route to landing page again and this routing evoke show_leads function
+  res.redirect('/leads');
 };
+//we gonna access the value in the input element
+//query for /leads route to landing page again and this routing evoke show_leads function
 
 //get data from mongo db and pass it to the view
 exports.show_leads = function (req, res, next) {
@@ -67,12 +68,22 @@ exports.edit_lead = function (req, res, next) {
 //deleting a record from DB and fetching new data.
 //One Issue!! we must use async function becouse when we delete an item, page refreshing immediately and deleted item shown still on the page!!!
 exports.delete_lead = function (req, res, next) {
-  email.deleteOne({ _id: req.params.lead_id }, function (err, res) {
-    if (err) throw err;
-    console.log('1 document deleted');
-  });
-  return email.find({}, function (err, data) {
-    if (err) throw err;
-    res.render('landing', { data: data }); //routing landing page again by pasting data retreived
-  });
+  return email
+    .deleteOne({ _id: req.params.lead_id }, function (err, res) {
+      if (err) throw err;
+      console.log('1 document deleted');
+    })
+    .then(result => {
+      res.redirect('/leads');
+    });
+};
+exports.delete_lead_json = function (req, res, next) {
+  return email
+    .deleteOne({ _id: req.params.lead_id }, function (err, res) {
+      if (err) throw err;
+      console.log('1 document deleted');
+    })
+    .then(result => {
+      res.send({ msg: 'Success' });
+    });
 };
