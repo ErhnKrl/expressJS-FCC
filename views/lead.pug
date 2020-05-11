@@ -2,5 +2,10 @@ extends layout
 
 block content
     h1 Lead
-    p LeadID: #{data[0]._id}
-    p Email: #{data[0].email}
+    for lead in data
+        p 
+            span LeadID: #{lead._id}
+            | 
+            a(href="/lead/"+lead._id+"/edit") Edita
+    
+        p Email: #{lead.email}

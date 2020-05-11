@@ -41,3 +41,24 @@ exports.show_lead = function (req, res, next) {
     res.render('lead', { data: data });
   });
 };
+
+exports.show_edit_lead = function (req, res, next) {
+  return email.find({ _id: req.params.lead_id }, function (err, data) {
+    if (err) throw err;
+    res.render('edit_lead', { data: data });
+  });
+};
+
+exports.edit_lead = function (req, res, next) {
+  let newvalues = { $set: { email: req.body.lead_email } };
+  console.log(newvalues);
+  email.updateOne({ _id: req.params.lead_id }, newvalues, function (err, res) {
+    if (err) throw err;
+    console.log('1 document updated');
+  });
+
+  return email.find({ _id: req.params.lead_id }, function (err, data) {
+    if (err) throw err;
+    res.render('lead', { data: data });
+  });
+};

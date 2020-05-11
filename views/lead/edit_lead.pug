@@ -1,0 +1,7 @@
+extends ../layout
+
+block content
+  h1 Editing Page
+  form(action="/lead/" + data[0]._id + "/edit" , method='POST')
+    input(name="lead_email" type="email", placeholder="Type your email", value=data[0].email)
+    button(type="submit") Save
