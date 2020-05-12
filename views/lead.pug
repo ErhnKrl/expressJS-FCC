@@ -1,6 +1,8 @@
-extends layout
-
-block content
+doctype html
+html(lang="en")
+  include common/head.pug
+  +head("starter MVP")
+  body
     h1 Lead
     for lead in data
         p 
@@ -12,3 +14,5 @@ block content
                 button(type="submit") Deleta
     
         p Email: #{lead.email}
+    include common/footer.pug
+    +footer()

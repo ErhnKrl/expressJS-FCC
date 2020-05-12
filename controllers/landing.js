@@ -67,7 +67,7 @@ exports.edit_lead = function (req, res, next) {
 
 //deleting a record from DB and fetching new data.
 //One Issue!! we must use async function becouse when we delete an item, page refreshing immediately and deleted item shown still on the page!!!
-exports.delete_lead = function (req, res, next) {
+exports.delete_lead = async function (req, res, next) {
   return email
     .deleteOne({ _id: req.params.lead_id }, function (err, res) {
       if (err) throw err;
